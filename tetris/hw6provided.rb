@@ -409,16 +409,3 @@ end
 
 # To help each game of Tetris be unique.
 srand
-
-
-
-[0, 5] # start
-# size = 15
-
-# blocks arr
-
-#  default
-[[0, 0], [-1, 0], [0, -1], [1, -1]]
-
-# after rotation (counter clockwise)
-[[0, 0], [0, -1], [1, 0], [1, 1]]
