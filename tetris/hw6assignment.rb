@@ -22,15 +22,30 @@ class MyPiece < Piece
                 [[0, 0], [0, -1], [0, 1], [0, -2], [0, 2]]],      
                 rotations([[0, 0], [1, 0], [0, 1], [0, 0]])]
 
+  Cheat_Piece = [[0, 0], [0, 0], [0, 0], [0, 0]]
+
   def self.next_piece (board)
-    MyPiece.new(All_My_Pieces.sample, board)
+    puts board.is_cheating
+
+    if board.is_cheating and board.score >= 100
+      MyPiece.new(Cheat_Piece, board)
+      board.score = board.score - 100
+      board.is_cheating = false
+    else
+      MyPiece.new(All_My_Pieces.sample, board)
+    end
   end 
+
 end
 
 class MyBoard < Board
+  attr_accessor(:is_cheating, :score)
+
   def initialize (game)
     super(game)
     @current_block = MyPiece.next_piece(self)
+    @score = 0
+    @is_cheating = false
   end
 
   def rotate_180_degrees
@@ -62,6 +77,7 @@ class MyTetris < Tetris
   def key_bindings
     super
     @root.bind('u', proc {@board.rotate_180_degrees})
+    @root.bind('c', proc {@board.is_cheating = true})
   end
 
 end
