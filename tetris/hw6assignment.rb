@@ -5,28 +5,26 @@
 
 class MyPiece < Piece
   def initialize (point_array, board)
-    super(point_array, board)
+    super
   end
 
-  All_My_Pieces = [
-    # [[[0, 0], [1, 0], [0, 1], [1, 1]]],  # square (only needs one)
-    #             rotations([[0, 0], [-1, 0], [1, 0], [0, -1]]), # T
-    #             [[[0, 0], [-1, 0], [1, 0], [2, 0]], # long (only needs two)
-    #             [[0, 0], [0, -1], [0, 1], [0, 2]]],
-    #             rotations([[0, 0], [0, -1], [0, 1], [1, 1]]), # L
-    #             rotations([[0, 0], [0, -1], [0, 1], [-1, 1]]), # inverted L
-    #             rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]), # S
-    #             rotations([[0, 0], [1, 0], [0, -1], [-1, -1]]), # Z
-
+  All_My_Pieces = [[[[0, 0], [1, 0], [0, 1], [1, 1]]],  # square (only needs one)
+                rotations([[0, 0], [-1, 0], [1, 0], [0, -1]]), # T
+                [[[0, 0], [-1, 0], [1, 0], [2, 0]], # long (only needs two)
+                [[0, 0], [0, -1], [0, 1], [0, 2]]],
+                rotations([[0, 0], [0, -1], [0, 1], [1, 1]]), # L
+                rotations([[0, 0], [0, -1], [0, 1], [-1, 1]]), # inverted L
+                rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]), # S
+                rotations([[0, 0], [1, 0], [0, -1], [-1, -1]]), # Z
+                # added pieces
                 rotations([[0, 0], [-1, 0], [1, 0], [0, 1], [1, 1]]), 
-                [[[0, 0], [-1, 0], [1, 0], [-2, 0], [2, 0]], #long long
+                [[[0, 0], [-1, 0], [1, 0], [-2, 0], [2, 0]],
                 [[0, 0], [0, -1], [0, 1], [0, -2], [0, 2]]],      
                 rotations([[0, 0], [1, 0], [0, 1], [0, 0]])]
 
   def self.next_piece (board)
     MyPiece.new(All_My_Pieces.sample, board)
-  end
-                  
+  end 
 end
 
 class MyBoard < Board
@@ -41,10 +39,14 @@ class MyBoard < Board
     end
     draw
   end
+
+  def next_piece
+    @current_block = MyPiece.next_piece(self)
+    @current_pos = nil
+  end
 end
 
 class MyTetris < Tetris
-  # your enhancements here
   def initialize
     super
   end
