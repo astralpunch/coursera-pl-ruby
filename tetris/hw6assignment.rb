@@ -5,31 +5,33 @@
 
 class MyPiece < Piece
   def initialize (point_array, board)
-    super (point_array, board)
+    super(point_array, board)
   end
+
+  All_My_Pieces = [
+    # [[[0, 0], [1, 0], [0, 1], [1, 1]]],  # square (only needs one)
+    #             rotations([[0, 0], [-1, 0], [1, 0], [0, -1]]), # T
+    #             [[[0, 0], [-1, 0], [1, 0], [2, 0]], # long (only needs two)
+    #             [[0, 0], [0, -1], [0, 1], [0, 2]]],
+    #             rotations([[0, 0], [0, -1], [0, 1], [1, 1]]), # L
+    #             rotations([[0, 0], [0, -1], [0, 1], [-1, 1]]), # inverted L
+    #             rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]), # S
+    #             rotations([[0, 0], [1, 0], [0, -1], [-1, -1]]), # Z
+
+                rotations([[0, 0], [-1, 0], [1, 0], [0, 1], [1, 1]]), 
+                [[[0, 0], [-1, 0], [1, 0], [-2, 0], [2, 0]], #long long
+                [[0, 0], [0, -1], [0, 1], [0, -2], [0, 2]]],      
+                rotations([[0, 0], [1, 0], [0, 1], [0, 0]])]
 
   def self.next_piece (board)
-    Piece.new(All_My_Pieces.sample, board)
+    MyPiece.new(All_My_Pieces.sample, board)
   end
-  
-  All_My_Pieces = [[[[0, 0], [1, 0], [0, 1], [1, 1]]],  # square (only needs one)
-                  rotations([[0, 0], [-1, 0], [1, 0], [0, -1]]), # T
-                  [[[0, 0], [-1, 0], [1, 0], [2, 0]], # long (only needs two)
-                  [[0, 0], [0, -1], [0, 1], [0, 2]]],
-                  rotations([[0, 0], [0, -1], [0, 1], [1, 1]]), # L
-                  rotations([[0, 0], [0, -1], [0, 1], [-1, 1]]), # inverted L
-                  rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]), # S
-                  rotations([[0, 0], [1, 0], [0, -1], [-1, -1]]), # Z
-
-                  rotations([[0, 0], [1, 0], [0, 1], [1, 1], [2, 1]]),
-                  [[[0, 0], [-1, 0], [1, 0], [-2, 0], [2, 0]],
-                  [[0, 0], [0, -1], [0, 1], [0, -2], [0, 2]]],          
-                  rotations([[0, 0], [0, 1], [1, 1]])]
+                  
 end
 
 class MyBoard < Board
-  def initialize game
-    super game
+  def initialize (game)
+    super(game)
     @current_block = MyPiece.next_piece(self)
   end
 
@@ -39,18 +41,6 @@ class MyBoard < Board
     end
     draw
   end
-
-  # def run
-  #   ran = @current_block.drop_by_one
-  #   if !ran
-  #     store_current
-  #     if !game_over?
-  #       next_piece
-  #     end
-  #   end
-  #   @game.update_score
-  #   draw
-  # end
 end
 
 class MyTetris < Tetris
