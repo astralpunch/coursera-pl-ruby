@@ -25,10 +25,8 @@ class MyPiece < Piece
   Cheat_Piece = [[[0, 0], [0, 0], [0, 0], [0, 0]]]
 
   def self.next_piece (board)
-    if board.is_cheating and board.score >= 100
-      board.score = board.score - 100
+    if board.is_cheating
       board.is_cheating = false
-
       MyPiece.new(Cheat_Piece, board)
     else
       MyPiece.new(All_My_Pieces.sample, board)
@@ -55,8 +53,10 @@ class MyBoard < Board
   end
 
   def cheat
-    @board.is_cheating = true
-    @score = @score - 100
+    if @score >= 100 and !@is_cheating
+      @is_cheating = true
+      @score = @score - 100
+    end
   end
 
   def next_piece
