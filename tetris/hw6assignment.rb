@@ -8,21 +8,14 @@ class MyPiece < Piece
     super
   end
 
-  All_My_Pieces = [[[[0, 0], [1, 0], [0, 1], [1, 1]]],  # square (only needs one)
-                rotations([[0, 0], [-1, 0], [1, 0], [0, -1]]), # T
-                [[[0, 0], [-1, 0], [1, 0], [2, 0]], # long (only needs two)
-                [[0, 0], [0, -1], [0, 1], [0, 2]]],
-                rotations([[0, 0], [0, -1], [0, 1], [1, 1]]), # L
-                rotations([[0, 0], [0, -1], [0, 1], [-1, 1]]), # inverted L
-                rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]), # S
-                rotations([[0, 0], [1, 0], [0, -1], [-1, -1]]), # Z
-                # new pieces
+  All_My_Pieces = Piece::All_Pieces.concat([
                 rotations([[0, 0], [-1, 0], [1, 0], [0, 1], [1, 1]]), 
                 [[[0, 0], [-1, 0], [1, 0], [-2, 0], [2, 0]],
                 [[0, 0], [0, -1], [0, 1], [0, -2], [0, 2]]],
-                rotations([[0, 0], [1, 0], [0, 1], [0, 0]])]
+                rotations([[0,0],[0,1],[1,0]])
+              ])
 
-  Cheat_Piece = [[[0, 0], [0, 0], [0, 0], [0, 0]]]
+  Cheat_Piece = [[[0, 0]]]
 
   def self.next_piece (board)
     if board.is_cheating
@@ -52,10 +45,22 @@ class MyBoard < Board
     draw
   end
 
+  def store_current
+    locations = @current_block.current_rotation
+    displacement = @current_block.position
+    (0...locations.size).each do |index|
+      current = locations[index]
+      @grid[current[1] + displacement[1]][current[0] + displacement[0]] = 
+        @current_pos[index]
+    end
+    remove_filled
+    @delay = [@delay - 2, 80].max
+  end
+
   def cheat
     if @score >= 100 and !@is_cheating
-      @is_cheating = true
       @score = @score - 100
+      @is_cheating = true
     end
   end
 
