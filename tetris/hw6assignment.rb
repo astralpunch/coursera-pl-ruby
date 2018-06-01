@@ -19,23 +19,20 @@ class MyPiece < Piece
                 # added pieces
                 rotations([[0, 0], [-1, 0], [1, 0], [0, 1], [1, 1]]), 
                 [[[0, 0], [-1, 0], [1, 0], [-2, 0], [2, 0]],
-                [[0, 0], [0, -1], [0, 1], [0, -2], [0, 2]]],      
+                [[0, 0], [0, -1], [0, 1], [0, -2], [0, 2]]],
                 rotations([[0, 0], [1, 0], [0, 1], [0, 0]])]
 
-  Cheat_Piece = [[0, 0], [0, 0], [0, 0], [0, 0]]
+  Cheat_Piece = [[[0, 0], [0, 0], [0, 0], [0, 0]]]
 
   def self.next_piece (board)
-    puts board.is_cheating
-
     if board.is_cheating and board.score >= 100
-      MyPiece.new(Cheat_Piece, board)
       board.score = board.score - 100
       board.is_cheating = false
+      MyPiece.new(Cheat_Piece, board)
     else
       MyPiece.new(All_My_Pieces.sample, board)
     end
   end 
-
 end
 
 class MyBoard < Board
@@ -53,6 +50,11 @@ class MyBoard < Board
       @current_block.move(0, 0, 2)
     end
     draw
+  end
+
+  def cheat
+    @board.is_cheating = true
+    @score = @score - 100
   end
 
   def next_piece
@@ -76,10 +78,10 @@ class MyTetris < Tetris
 
   def key_bindings
     super
+  
     @root.bind('u', proc {@board.rotate_180_degrees})
-    @root.bind('c', proc {@board.is_cheating = true})
+    @root.bind('c', proc {@board.cheat})
   end
-
 end
 
 
